@@ -12,6 +12,9 @@ Binary Search Tree problems implemented in Java
 10. Spiral level order
 11. Children sum property
 12. Convert tree to children sum property
+13. Level order traversal using queue
+14. Left View of the tree
+15. Right View of the tree
 
 some more coming.. 
 
