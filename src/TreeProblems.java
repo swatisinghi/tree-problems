@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class TreeProblems {
@@ -6,6 +8,7 @@ public class TreeProblems {
     private int[] elements;
     private int size;
     private Node root;
+    private int maxLevel;
 
     public TreeProblems(int size) {
         this.in = new Scanner(System.in);
@@ -189,23 +192,23 @@ public class TreeProblems {
         return root.getVal() == leftData + rightData && childSumProperty(root.getLlink()) && childSumProperty(root.getRlink());
     }
 
-    private void converTreeToChildSum(Node root) {
+    private void convertTreeToChildSum(Node root) {
 
-        int leftData = 0, righData = 0;
+        int leftData = 0, rightData = 0;
 
         if(root == null || (root.getLlink() == null && root.getRlink() == null))
             return;
 
-        converTreeToChildSum(root.getLlink());
-        converTreeToChildSum(root.getRlink());
+        convertTreeToChildSum(root.getLlink());
+        convertTreeToChildSum(root.getRlink());
 
         if(root.getLlink() != null)
             leftData = root.getLlink().getVal();
 
         if(root.getRlink() != null)
-            righData = root.getRlink().getVal();
+            rightData = root.getRlink().getVal();
 
-        int diff = root.getVal() - (leftData + righData);
+        int diff = root.getVal() - (leftData + rightData);
 
         if(diff < 0)
             root.setVal(root.getVal() - diff);
@@ -221,6 +224,56 @@ public class TreeProblems {
             root.getRlink().setVal(root.getRlink().getVal() + diff);
             incrementValues(root.getRlink(), diff);
         }
+    }
+
+    private void levelOrderUsingQueue(Queue<Node> queue) {
+
+        if(queue.size() == 0)
+            return;
+
+        Node root = queue.remove();
+
+        if(root.getLlink() != null) {
+            System.out.print(root.getLlink().getVal() + "->");
+            queue.add(root.getLlink());
+        }
+        if(root.getRlink() != null) {
+            System.out.print(root.getRlink().getVal() + "->");
+            queue.add(root.getRlink());
+        }
+
+        levelOrderUsingQueue(queue);
+        levelOrderUsingQueue(queue);
+
+    }
+
+    private void leftView(Node root, int level) {
+
+        if(root == null) {
+            return;
+        }
+
+        if(level > this.maxLevel) {
+            System.out.println(root.getVal());
+            this.maxLevel = level;
+        }
+
+        leftView(root.getLlink(), level + 1);
+        leftView(root.getRlink(), level + 1);
+
+    }
+
+    private void rightView(Node root, int level) {
+        if(root == null)
+            return;
+
+        if(this.maxLevel < level) {
+            System.out.println(root.getVal());
+            this.maxLevel = level;
+        }
+
+        rightView(root.getRlink(), level + 1);
+        rightView(root.getLlink(), level + 1);
     }
 
 
@@ -239,6 +292,9 @@ public class TreeProblems {
         System.out.println("10. Spiral level order");
         System.out.println("11. Children sum property");
         System.out.println("12. Convert tree to children sum property");
+        System.out.println("13. Level order traversal using queue");
+        System.out.println("14. Left View of the tree");
+        System.out.println("15. Right View of the tree");
         System.out.println("Q. Quit");
 
         String input = in.nextLine();
@@ -272,7 +328,19 @@ public class TreeProblems {
         else if(input.equals("11"))
             System.out.println(childSumProperty(root));
         else if(input.equals("12"))
-            converTreeToChildSum(root);
+            convertTreeToChildSum(root);
+        else if(input.equals("13")) {
+            System.out.print(root.getVal() + "->");
+            Queue<Node> queue = new LinkedList<Node>();
+            queue.add(root);
+            levelOrderUsingQueue(queue);
+        } else if(input.equals("14")) {
+            this.maxLevel = 0;
+            leftView(root, 1);
+        } else if(input.equals("15")) {
+            this.maxLevel = 0;
+            rightView(root, 1);
+        }
         else if(input.equals("Q"))
             System.exit(0);
 
