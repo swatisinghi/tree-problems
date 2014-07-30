@@ -275,6 +275,18 @@ public class TreeProblems {
         rightView(root.getRlink(), level + 1);
         rightView(root.getLlink(), level + 1);
     }
+    
+    private void clone(Node node, Node cloneNode) {
+      if (node.getLlink() != null) {
+        cloneNode.setLlink(node.getLlink());
+        clone(node.getLlink(), cloneNode.getLlink());
+      }
+      
+      if (node.getRlink() != null) {
+        cloneNode.setRlink(node.getRlink());
+        clone(node.getRlink(), cloneNode.getRlink());
+      }
+    }
 
 
     public void menu() {
@@ -295,6 +307,7 @@ public class TreeProblems {
         System.out.println("13. Level order traversal using queue");
         System.out.println("14. Left View of the tree");
         System.out.println("15. Right View of the tree");
+        System.out.println("16. Clone a tree");
         System.out.println("Q. Quit");
 
         String input = in.nextLine();
@@ -340,7 +353,15 @@ public class TreeProblems {
         } else if(input.equals("15")) {
             this.maxLevel = 0;
             rightView(root, 1);
-        }
+        } else if(input.equals("16")) {
+          Node cloneRoot = new Node(root.getVal());
+          clone(root, cloneRoot);
+          System.out.println("In order traversal of original tree");
+          inorder(root);
+          System.out.println("In order traversal of cloned tree");
+          inorder(cloneRoot);
+      }
+        
         else if(input.equals("Q"))
             System.exit(0);
 

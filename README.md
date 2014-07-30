@@ -15,6 +15,7 @@ Binary Search Tree problems implemented in Java
 13. Level order traversal using queue
 14. Left View of the tree
 15. Right View of the tree
+16. Clone a tree
 
 some more coming.. 
 
